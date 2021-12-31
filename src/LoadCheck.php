@@ -18,7 +18,7 @@ class LoadCheck implements CheckInterface
     {
         $loads = sys_getloadavg();
 
-        $attributeName = 'cpu-load';
+        $attributeName = 'cpuLoad';
         if ($loads === false) {
             return new CheckStatus(
                 $attributeName,
