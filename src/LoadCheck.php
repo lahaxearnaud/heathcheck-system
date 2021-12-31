@@ -28,16 +28,8 @@ class LoadCheck implements CheckInterface
             );
         }
 
-        $nbCore = null;
-        if (is_file('/proc/cpuinfo')) {
-            $cpuinfo = file_get_contents('/proc/cpuinfo');
-            if ($cpuinfo !== false) {
-                preg_match_all('/^processor/m', $cpuinfo, $matches);
-                $nbCore = count($matches[0]);
-            }
-        }
-
-        if ($nbCore === null) {
+        $nbCore = $this->getNumberOfCPUs();
+        if ($nbCore === 0) {
             return new CheckStatus(
                 $attributeName,
                 __CLASS__,
@@ -45,9 +37,8 @@ class LoadCheck implements CheckInterface
                 'Fail to check the number of cpu cors'
             );
         }
-
-        // load on 15 mins
-        $load = $loads[2] / $nbCore;
+        // load on 5 mins
+        $load = $loads[1] / $nbCore;
 
         $status = CheckStatus::STATUS_OK;
         if ($load > $this->incidentLevelPercentageByCore) {
@@ -61,5 +52,15 @@ class LoadCheck implements CheckInterface
             __CLASS__,
             $status
         );
+    }
+
+    protected function getNumberOfCPUs() :int {
+        if (PHP_OS_FAMILY == 'Windows') {
+            $cores = shell_exec('echo %NUMBER_OF_PROCESSORS%');
+        } else { // linux & macos
+            $cores = shell_exec('nproc');
+        }
+
+        return (int) $cores;
     }
 }
