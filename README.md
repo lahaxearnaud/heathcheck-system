@@ -11,7 +11,7 @@ Install checker:
 Register service in your app:
 
 ```yaml
-    Alahaxe\HealthCheckBundle\Checks\Doctrine\FreeSpaceCheck:
+    Alahaxe\HealthCheckBundle\Checks\System\FreeSpaceCheck:
         # optional arguments
         arguments:
             $partition: "/"
@@ -21,7 +21,7 @@ Register service in your app:
             $incidentLevelPercentage: 0.1
         tags: ['lahaxearnaud.healthcheck.check']
 
-    Alahaxe\HealthCheckBundle\Checks\Doctrine\LoadCheck:
+    Alahaxe\HealthCheckBundle\Checks\System\LoadCheck:
         # optional arguments
         arguments:
             $warningLevelPercentageByCore: 0.7

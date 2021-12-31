@@ -1,6 +1,6 @@
 <?php
 
-namespace Alahaxe\HealthCheckBundle\Checks\Doctrine;
+namespace Alahaxe\HealthCheckBundle\Checks\System;
 
 use Alahaxe\HealthCheck\Contracts\CheckInterface;
 use Alahaxe\HealthCheck\Contracts\CheckStatus;
