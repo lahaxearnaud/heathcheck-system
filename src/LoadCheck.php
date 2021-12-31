@@ -28,7 +28,7 @@ class LoadCheck implements CheckInterface
             );
         }
 
-        if(is_file('/proc/cpuinfo')) {
+        if (is_file('/proc/cpuinfo')) {
             $cpuinfo = file_get_contents('/proc/cpuinfo');
             preg_match_all('/^processor/m', $cpuinfo, $matches);
             $nbCore = count($matches[0]);
@@ -49,7 +49,7 @@ class LoadCheck implements CheckInterface
         $status = CheckStatus::STATUS_OK;
         if ($freePercentage > $this->incidentLevelPercentageByCore) {
             $status = CheckStatus::STATUS_INCIDENT;
-        } else if ($freePercentage > $this->warningLevelPercentageByCore) {
+        } elseif ($freePercentage > $this->warningLevelPercentageByCore) {
             $status = CheckStatus::STATUS_WARNING;
         }
 
