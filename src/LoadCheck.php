@@ -28,6 +28,7 @@ class LoadCheck implements CheckInterface
             );
         }
 
+        $nbCore = null;
         if (is_file('/proc/cpuinfo')) {
             $cpuinfo = file_get_contents('/proc/cpuinfo');
             if ($cpuinfo !== false) {
