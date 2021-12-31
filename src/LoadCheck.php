@@ -54,7 +54,8 @@ class LoadCheck implements CheckInterface
         );
     }
 
-    protected function getNumberOfCPUs() :int {
+    protected function getNumberOfCPUs() :int
+    {
         if (PHP_OS_FAMILY == 'Windows') {
             $cores = shell_exec('echo %NUMBER_OF_PROCESSORS%');
         } else { // linux & macos
