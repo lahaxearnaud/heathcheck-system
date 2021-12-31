@@ -23,7 +23,7 @@ class FreeSpaceCheck implements CheckInterface
         $status = CheckStatus::STATUS_OK;
         if ($freePercentage < $this->incidentLevelPercentage) {
             $status = CheckStatus::STATUS_INCIDENT;
-        } else if ($freePercentage < $this->warningLevelPercentage) {
+        } elseif ($freePercentage < $this->warningLevelPercentage) {
             $status = CheckStatus::STATUS_WARNING;
         }
 
