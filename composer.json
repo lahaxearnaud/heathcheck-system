@@ -17,6 +17,6 @@
     "minimum-stability": "stable",
     "require": {
         "php": "^8.1",
-        "alahaxe/healthcheck-contracts": "^1"
+        "alahaxe/healthcheck-contracts": "^1.2"
     }
 }

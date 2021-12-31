@@ -4,7 +4,7 @@ namespace Alahaxe\HealthCheckBundle\Checks\Doctrine;
 
 use Alahaxe\HealthCheck\Contracts\CheckInterface;
 use Alahaxe\HealthCheck\Contracts\CheckStatusInterface;
-use Alahaxe\HealthCheckBundle\CheckStatus;
+use Alahaxe\HealthCheck\Contracts\CheckStatus;
 
 class LoadCheck implements CheckInterface
 {
@@ -28,28 +28,31 @@ class LoadCheck implements CheckInterface
             );
         }
 
+        $nbCore = null;
         if(is_file('/proc/cpuinfo')) {
             $cpuinfo = file_get_contents('/proc/cpuinfo');
-            preg_match_all('/^processor/m', $cpuinfo, $matches);
-            $nbCore = count($matches[0]);
-        } else {
-            if ($loads === false) {
-                return new CheckStatus(
-                    $attributeName,
-                    __CLASS__,
-                    CheckStatus::STATUS_WARNING,
-                    'Fail to check the number of cpu cors'
-                );
+            if ($cpuinfo !== false) {
+                preg_match_all('/^processor/m', $cpuinfo, $matches);
+                $nbCore = count($matches[0]);
             }
+        }
+
+        if ($nbCore === null) {
+            return new CheckStatus(
+                $attributeName,
+                __CLASS__,
+                CheckStatus::STATUS_WARNING,
+                'Fail to check the number of cpu cors'
+            );
         }
 
         // load on 15 mins
         $load = $loads[2] / $nbCore;
 
         $status = CheckStatus::STATUS_OK;
-        if ($freePercentage > $this->incidentLevelPercentageByCore) {
+        if ($load > $this->incidentLevelPercentageByCore) {
             $status = CheckStatus::STATUS_INCIDENT;
-        } else if ($freePercentage > $this->warningLevelPercentageByCore) {
+        } else if ($load > $this->warningLevelPercentageByCore) {
             $status = CheckStatus::STATUS_WARNING;
         }
 
