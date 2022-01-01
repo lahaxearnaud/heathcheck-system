@@ -52,3 +52,24 @@ jobs:
 #            -   name: Run phpunit
 #                run: php bin/phpunit --coverage-text
 
+    release:
+        runs-on: ubuntu-latest
+        needs: tests
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+            -   name: Semantic Release
+                uses: cycjimmy/semantic-release-action@v2
+                with:
+                    extra_plugins: |
+                        @semantic-release/commit-analyzer
+                        @semantic-release/release-notes-generator
+                        @semantic-release/changelog
+                        @semantic-release/github
+                        @semantic-release/git
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            -   name: New release
+                if: steps.semantic.outputs.new_release_published == 'true'
+                run: |
+                    echo ${{ steps.semantic.outputs.new_release_version }}
